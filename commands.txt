@@ -14,6 +14,8 @@ python3 ~/server.py
 
 3. Client request from server:
 
+### curl --limit-rate 200K -o /dev/null http://192.168.56.10:8000/sample.bin
+
 Start GUI : startx
 
 ffplay -fflags nobuffer http://192.168.56.10:8000/sample.mp4
@@ -29,3 +31,23 @@ sudo python3 ~/detector.py
 4. Run rst.py
 
 sudo python3 ~/rst.py
+
+
+
+Defense:
+
+
+# client — add iptables rule and start prevention
+sudo iptables -I INPUT -p tcp --tcp-flags RST RST \
+    -s 192.168.56.10 --sport 8000 -j NFQUEUE --queue-num 1
+sudo python3 ~/prevention.py
+
+# in another client terminal
+ffplay -fflags nobuffer http://192.168.56.10:8000/sample.mp4
+
+# attacker fires rst.py → stream survives, prevention.py prints BLOCKED
+
+
+#cleanup
+sudo iptables -D INPUT -p tcp --tcp-flags RST RST \
+    -s 192.168.56.10 --sport 8000 -j NFQUEUE --queue-num 1
