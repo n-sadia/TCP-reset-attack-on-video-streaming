@@ -8,16 +8,24 @@ attacker: ssh base@192.168.56.12
 
 2. start the server:
 
-python3 -m http.server 8000
+python3 ~/server.py
 
 
 
-3. Run rst.py
+3. Client request from server:
+
+Start GUI : startx
+
+ffplay -fflags nobuffer http://192.168.56.10:8000/sample.mp4
+
+
+
+4. Run detector.py on client:
+
+sudo python3 ~/detector.py
+
+
+
+4. Run rst.py
 
 sudo python3 ~/rst.py
-
-
-
-4. Client request from server:
-
-curl --limit-rate 200K -o /dev/null http://192.168.56.10:8000/sample.bin
