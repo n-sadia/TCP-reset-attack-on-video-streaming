@@ -1,0 +1,23 @@
+1. Enter the VMs:
+
+server: ssh base@192.168.56.10 
+client: ssh base@192.168.56.11
+attacker: ssh base@192.168.56.12
+
+
+
+2. start the server:
+
+python3 -m http.server 8000
+
+
+
+3. Run rst.py
+
+sudo python3 ~/rst.py
+
+
+
+4. Client request from server:
+
+curl --limit-rate 200K -o /dev/null http://192.168.56.10:8000/sample.bin
